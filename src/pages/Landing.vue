@@ -3,21 +3,39 @@
     <div class="page-header page-header-small">
       <parallax
         class="page-header-image"
-        style="background-image: url('img/bg6.jpg')"
+        style="background-image: url('img1/teren4.jpg')"
       >
       </parallax>
       <div class="content-center">
         <div class="container">
-          <h1 class="title">This is our great company.</h1>
+          <h1 class="title">Dobrodošli na Opens Urban Court</h1>
           <div class="text-center">
-            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
+            <a
+              href="https://www.facebook.com/urbancourtNS/"
+              class="btn btn-primary btn-icon btn-round"
+              rel="tooltip"
+              title="Like us on Facebook"
+              data-placement="bottom"
+            >
               <i class="fab fa-facebook-square"></i>
             </a>
-            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
-              <i class="fab fa-twitter"></i>
+            <a
+              href="https://www.instagram.com/urban.court/"
+              class="btn btn-primary btn-icon btn-round"
+              rel="tooltip"
+              title="Follow us on Instagram"
+              data-placement="bottom"
+            >
+              <i class="fab fa-instagram"></i>
             </a>
-            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
-              <i class="fab fa-google-plus"></i>
+            <a
+              href="https://www.google.com/maps/place/Liman+3x3+Urban+Court/@45.2357805,19.8385452,17z/data=!3m1!4b1!4m5!3m4!1s0x475b11661db37819:0xd06041c39c9ce0cf!8m2!3d45.2357767!4d19.8407339"
+              class="btn btn-primary btn-icon btn-round"
+              rel="tooltip"
+              title="Location of the Urban Court"
+              data-placement="bottom"
+            >
+              <i class="fab fa fa-location-arrow"></i>
             </a>
           </div>
         </div>
@@ -27,12 +45,13 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto text-center">
-            <h2 class="title">Who we are?</h2>
+            <h2 class="title">Sta je Urban Court?</h2>
             <h5 class="description">
-              According to the National Oceanic and Atmospheric Administration,
-              Ted, Scambos, NSIDClead scentist, puts the potentially record low
-              maximum sea ice extent tihs year down to low ice extent in the
-              Pacific and a late drop in ice extent in the Barents Sea.
+              Urban Court predstavlja adaptaciju sportskog terena na lokaciji
+              Liman 4, novo mesto za okupljanje mladih u Novom Sadu, koji će
+              moći da kvalitetno provode slobodno vreme na zdrav način, privode
+              se kraju. Pored terena za basket 3×3, Novosađani će ubuduće imati
+              priliku da se oprobaju u Teqball-u i Streetwork out-u.
             </h5>
           </div>
         </div>
@@ -42,7 +61,7 @@
             <div class="col-md-6">
               <div
                 class="image-container image-left"
-                style="background-image: url('img/login.jpg')"
+                style="background-image: url('img1/teren.jpg')"
               >
                 <!-- First image on the left side -->
                 <p class="blockquote blockquote-primary">
@@ -57,15 +76,17 @@
               <!-- Second image on the left side of the article -->
               <div
                 class="image-container"
-                style="background-image: url('img/bg3.jpg')"
+                style="background-image: url('img1/teren2.jpg')"
               ></div>
             </div>
             <div class="col-md-5">
               <!-- First image on the right side, above the article -->
               <div
                 class="image-container image-right"
-                style="background-image: url('img/bg1.jpg')"
-              ></div>
+                style="background-image: url('img1/teren4.jpg')"
+              >
+                <!-- <img src="img1/teren.jpg" /> -->
+              </div>
               <h3>
                 So what does the new record for the lowest level of winter ice
                 actually mean
@@ -121,15 +142,6 @@
                   some <a href="#">links</a> for people to be able to follow
                   them outside the site.
                 </p>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-twitter"></i
-                ></a>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-instagram"></i
-                ></a>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-facebook-square"></i
-                ></a>
               </div>
             </div>
             <div class="col-md-4">
@@ -147,12 +159,6 @@
                   some <a href="#">links</a> for people to be able to follow
                   them outside the site.
                 </p>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-twitter"></i
-                ></a>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-linkedin"></i
-                ></a>
               </div>
             </div>
             <div class="col-md-4">
@@ -170,15 +176,6 @@
                   some <a href="#">links</a> for people to be able to follow
                   them outside the site.
                 </p>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-google-plus"></i
-                ></a>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-youtube"></i
-                ></a>
-                <a href="#pablo" class="btn btn-primary btn-icon btn-round"
-                  ><i class="fab fa-twitter"></i
-                ></a>
               </div>
             </div>
           </div>
@@ -227,23 +224,23 @@
   </div>
 </template>
 <script>
-import { Button, FormGroupInput } from '@/components';
+import { Button, FormGroupInput } from "@/components";
 export default {
-  name: 'landing',
-  bodyClass: 'landing-page',
+  name: "landing",
+  bodyClass: "landing-page",
   components: {
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
   },
   data() {
     return {
       form: {
-        firstName: '',
-        email: '',
-        message: ''
-      }
+        firstName: "",
+        email: "",
+        message: "",
+      },
     };
-  }
+  },
 };
 </script>
 <style></style>

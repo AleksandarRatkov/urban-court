@@ -1,7 +1,7 @@
 <template>
   <div
     class="section section-signup"
-    style="background-image: url('img/bg11.jpg'); background-size: cover; background-position: top center; min-height: 700px;"
+    style="background-image: url('img1/teren3.jpg')"
   >
     <div class="container">
       <div class="row">
@@ -17,15 +17,15 @@
               </a>
               <a
                 href="#pablo"
-                class="btn btn-neutral btn-twitter btn-icon btn-lg btn-round"
+                class="btn btn-neutral btn-google btn-icon btn-lg btn-round"
               >
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-google-plus"></i>
               </a>
               <a
                 href="#pablo"
-                class="btn btn-neutral btn-google btn-icon btn-round"
+                class="btn btn-neutral btn-twitter btn-icon btn-round"
               >
-                <i class="fab fa-google-plus"></i>
+                <i class="fab fa-twitter"></i>
               </a>
             </div>
           </template>
@@ -68,14 +68,14 @@
   </div>
 </template>
 <script>
-import { Card, FormGroupInput, Button } from '@/components';
+import { Card, FormGroupInput, Button } from "@/components";
 
 export default {
   components: {
     Card,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
-  }
+    [FormGroupInput.name]: FormGroupInput,
+  },
 };
 </script>
 <style></style>
