@@ -4,12 +4,13 @@
       class="page-header-image"
       style="background-image: url('img1/court.jpg')"
     ></div>
-    <ValidationObserver v-slot="{ invalid }">
-      <div class="content">
-        <div class="container">
-          <div class="col-md-5 ml-auto mr-auto">
+
+    <div class="content">
+      <div class="container">
+        <ValidationObserver v-slot="{ invalid }">
+          <div class="col-md-8 col-12 ml-auto mr-auto">
             <card type="login" plain>
-              <div slot="header">
+              <div slot="header" class="sign-up">
                 <h1>Sign Up</h1>
               </div>
 
@@ -42,7 +43,7 @@
                 placeholder="Phone number"
                 name="Phone number"
                 id="phoneNumber"
-                rules="required"
+                rules="required|numeric|min:8|max:10"
               >
               </fg-input>
 
@@ -105,9 +106,9 @@
               </template>
             </card>
           </div>
-        </div>
+        </ValidationObserver>
       </div>
-    </ValidationObserver>
+    </div>
     <main-footer></main-footer>
   </div>
 </template>
@@ -146,10 +147,16 @@ export default {
       if (this.signupForm.repeatPassword) {
         return this.signupForm.password === this.signupForm.repeatPassword
           ? ""
-          : "Passwords are not identical";
+          : "Passwords a`re not identical";
       }
     },
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@media screen and (max-width: 820px) {
+  .sign-up {
+    margin-top: 3rem !important;
+  }
+}
+</style>

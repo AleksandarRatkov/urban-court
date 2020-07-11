@@ -64,7 +64,7 @@
 </template>
 <script>
 import { extend, ValidationProvider } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required, email, min, numeric, max } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
@@ -76,9 +76,19 @@ extend("email", {
   message: "Email must be valid",
 });
 
+extend("numeric", {
+  ...numeric,
+  message: "{_field_} can contain only numerics",
+});
+
 extend("min", {
   ...min,
   message: "{_field_} must be greater than {length} characters",
+});
+
+extend("max", {
+  ...max,
+  message: "{_field_} must not exceed {length} characters",
 });
 
 export default {
@@ -145,9 +155,20 @@ export default {
 <style>
 .input {
   height: 45px !important;
-  width: 277px !important;
+  width: 270px !important;
   border-top-right-radius: 30px !important;
   border-bottom-right-radius: 30px !important;
+}
+@media screen and (max-width: 320px) {
+  .input {
+    width: 215px !important;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .input {
+    width: 255px !important;
+  }
 }
 .has-danger:after {
   display: none !important;

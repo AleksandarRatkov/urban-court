@@ -6,9 +6,9 @@
     ></div>
     <div class="content">
       <div class="container">
-        <div class="col-md-5 ml-auto mr-auto">
+        <div class="col-md-8 col-12 ml-auto mr-auto">
           <card type="login" plain>
-            <div slot="header">
+            <div slot="header" class="mt-5">
               <h1>Login</h1>
             </div>
 

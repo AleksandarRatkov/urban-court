@@ -8,9 +8,9 @@
   >
     <template slot-scope="{ toggle, isToggled }">
       <img class="navbar-img" src="img1/logo-header.png" alt="" />
-      <router-link v-popover:popover1 class="navbar-brand brand-name" to="/">
+      <!-- <router-link v-popover:popover1 class="navbar-brand brand-name" to="/">
         Urban Court
-      </router-link>
+      </router-link> -->
     </template>
     <template slot="navbar-menu">
       <li class="nav-item">
@@ -29,7 +29,7 @@
           rel="tooltip"
           title="Like us on Facebook"
           data-placement="bottom"
-          href="https://www.facebook.com/CreativeTim"
+          href="https://www.facebook.com/urbancourtNS/"
           target="_blank"
         >
           <i class="fab fa-facebook-square"></i>
@@ -42,7 +42,7 @@
           rel="tooltip"
           title="Follow us on Instagram"
           data-placement="bottom"
-          href="https://www.instagram.com/CreativeTimOfficial"
+          href="https://www.instagram.com/urban.court/"
           target="_blank"
         >
           <i class="fab fa-instagram"></i>
@@ -71,7 +71,6 @@ export default {
   },
   computed: {
     currentRoute() {
-      console.log(this.$route.name === "signup");
       return this.$route.name;
     },
   },
