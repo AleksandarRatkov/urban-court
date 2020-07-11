@@ -5,7 +5,7 @@
       { 'input-group': hasIcon },
       { 'has-danger': error },
       { 'input-group-focus': focused },
-      { 'has-label': label || $slots.label }
+      { 'has-label': label || $slots.label },
     ]"
   >
     <slot name="label">
@@ -14,50 +14,79 @@
         <span v-if="required">*</span>
       </label>
     </slot>
+    <ValidationProvider v-slot="{ errors }" :name="name" :rules="rules">
+      <div :class="[{ 'input-group': hasIcon }]">
+        <slot name="addonLeft">
+          <div v-if="addonLeftIcon" class="input-group-prepend">
+            <i class="input-group-text" :class="addonLeftIcon"></i>
+          </div>
+        </slot>
+        <slot>
+          <input
+            :value="value"
+            :name="name"
+            v-on="listeners"
+            v-bind="$attrs"
+            class="form-control input"
+            :class="[{ valid: value && !error }, inputClasses]"
+            aria-describedby="addon-right addon-left"
+          />
+        </slot>
+        <slot name="addonRight">
+          <span
+            v-if="addonRightIcon"
+            class="input-group-addon input-group-append"
+          >
+            <i class="input-group-text" :class="addonRightIcon"></i>
+          </span>
+        </slot>
 
-    <div :class="[{ 'input-group': hasIcon }]">
-      <slot name="addonLeft">
-        <div v-if="addonLeftIcon" class="input-group-prepend">
-          <i class="input-group-text" :class="addonLeftIcon"></i>
-        </div>
-      </slot>
-      <slot>
-        <input
-          :value="value"
-          v-on="listeners"
-          v-bind="$attrs"
-          class="form-control"
-          :class="[{ valid: value && !error }, inputClasses]"
-          aria-describedby="addon-right addon-left"
-        />
-      </slot>
-      <slot name="addonRight">
-        <span
-          v-if="addonRightIcon"
-          class="input-group-addon input-group-append"
-        >
-          <i class="input-group-text" :class="addonRightIcon"></i>
-        </span>
-      </slot>
-
-      <slot name="infoBlock"></slot>
-      <slot name="helpBlock">
-        <div
-          class="text-danger invalid-feedback"
-          style="display: block;"
-          :class="{ 'mt-2': hasIcon }"
-          v-if="error"
-        >
-          {{ error }}
-        </div>
-      </slot>
-    </div>
+        <slot name="infoBlock"></slot>
+        <slot name="helpBlock">
+          <div
+            class="text-danger invalid-feedback"
+            style="display: block;"
+            v-if="!error"
+          >
+            {{ errors[0] }}
+          </div>
+          <div
+            class="text-danger invalid-feedback"
+            style="display: block;"
+            v-if="error"
+          >
+            {{ error }}
+          </div>
+        </slot>
+      </div>
+    </ValidationProvider>
   </div>
 </template>
 <script>
+import { extend, ValidationProvider } from "vee-validate";
+import { required, email, min } from "vee-validate/dist/rules";
+
+extend("required", {
+  ...required,
+  message: "{_field_} can not be empty",
+});
+
+extend("email", {
+  ...email,
+  message: "Email must be valid",
+});
+
+extend("min", {
+  ...min,
+  message: "{_field_} must be greater than {length} characters",
+});
+
 export default {
+  components: {
+    ValidationProvider,
+  },
   inheritAttrs: false,
-  name: 'fg-input',
+  name: "fg-input",
   props: {
     required: Boolean,
     label: String,
@@ -66,14 +95,16 @@ export default {
     inputClasses: String,
     value: {
       type: [String, Number],
-      default: ''
+      default: "",
     },
     addonRightIcon: String,
-    addonLeftIcon: String
+    addonLeftIcon: String,
+    rules: String,
+    name: String,
   },
   data() {
     return {
-      focused: false
+      focused: false,
     };
   },
   computed: {
@@ -82,7 +113,7 @@ export default {
         ...this.$listeners,
         input: this.updateValue,
         focus: this.onFocus,
-        blur: this.onBlur
+        blur: this.onBlur,
       };
     },
     hasIcon() {
@@ -93,22 +124,32 @@ export default {
         this.addonRightIcon !== undefined ||
         this.addonLeftIcon !== undefined
       );
-    }
+    },
   },
   methods: {
     updateValue(evt) {
       let value = evt.target.value;
-      this.$emit('input', value);
+      this.$emit("input", value);
     },
     onFocus(value) {
       this.focused = true;
-      this.$emit('focus', value);
+      this.$emit("focus", value);
     },
     onBlur(value) {
       this.focused = false;
-      this.$emit('blur', value);
-    }
-  }
+      this.$emit("blur", value);
+    },
+  },
 };
 </script>
-<style></style>
+<style>
+.input {
+  height: 45px !important;
+  width: 277px !important;
+  border-top-right-radius: 30px !important;
+  border-bottom-right-radius: 30px !important;
+}
+.has-danger:after {
+  display: none !important;
+}
+</style>
