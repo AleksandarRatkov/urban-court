@@ -7,12 +7,12 @@ import SignUp from './pages/SignUp.vue';
 import Profile from './pages/Profile.vue';
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
+import { auth } from './firebaseConfig'
 
 Vue.use(Router);
 
-export default new Router({
-  linkExactActiveClass: 'active',
-  routes: [
+const routes =
+  [
     {
       path: '/',
       name: 'index',
@@ -20,6 +20,9 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
+      },
+      meta: {
+        requiresAuth: true
       }
     },
     {
@@ -29,6 +32,9 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
+      },
+      meta: {
+        requiresAuth: true
       }
     },
     {
@@ -44,7 +50,7 @@ export default new Router({
       name: 'signup',
       components: { default: SignUp, header: MainNavbar },
       props: {
-        header: { colorOnScroll: 400 }
+        header: { colorOnScroll: 20 }
       }
     },
     {
@@ -54,9 +60,16 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
+      },
+      meta: {
+        requiresAuth: true
       }
     }
-  ],
+  ]
+
+const router = new Router({
+  linkExactActiveClass: 'active',
+  routes,
   scrollBehavior: to => {
     if (to.hash) {
       return { selector: to.hash };
@@ -64,4 +77,17 @@ export default new Router({
       return { x: 0, y: 0 };
     }
   }
-});
+})
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+  const currentUser = auth.currentUser
+
+  if (requiresAuth && !currentUser) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
+export default router
