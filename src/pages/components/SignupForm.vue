@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="section section-signup"
-    style="background-image: url('img1/teren3.jpg')"
-  >
+  <div class="section section-signup signup">
     <div class="container">
       <div class="row">
         <card class="card-signup" header-classes="text-center" color="orange">
@@ -29,41 +26,16 @@
               </a>
             </div>
           </template>
-          <template>
-            <fg-input
-              class="no-border"
-              placeholder="First Name..."
-              addon-left-icon="now-ui-icons users_circle-08"
-            >
-            </fg-input>
-
-            <fg-input
-              class="no-border"
-              placeholder="Last Name..."
-              addon-left-icon="now-ui-icons text_caps-small"
-            >
-            </fg-input>
-
-            <fg-input
-              class="no-border"
-              placeholder="Email"
-              addon-left-icon="now-ui-icons ui-1_email-85"
-            >
-            </fg-input>
-          </template>
           <div class="card-footer text-center">
-            <n-button type="neutral" round size="lg">Get Started</n-button>
+            <router-link to="/signup"
+              ><n-button type="neutral" round size="lg"
+                >Get Started</n-button
+              ></router-link
+            >
           </div>
         </card>
       </div>
-      <div class="col text-center">
-        <router-link
-          to="/login"
-          class="btn btn-simple btn-round btn-white btn-lg"
-        >
-          View Login Page
-        </router-link>
-      </div>
+      <div class="col text-center"></div>
     </div>
   </div>
 </template>
@@ -78,4 +50,10 @@ export default {
   },
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.signup {
+  background-image: url("../../../public/img1/rim.jpeg");
+  background-position: center;
+  height: 768px;
+}
+</style>
