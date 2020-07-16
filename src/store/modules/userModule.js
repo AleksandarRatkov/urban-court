@@ -1,38 +1,64 @@
+import {
+  auth,
+  usersCollection,
+} from '../../firebaseConfig'
 const fb = require('../../firebaseConfig')
 
 export const userModule = {
   namespaced: true,
   state: {
-    currentUser: null,
+    currentUserId: null,
     userProfile: {},
   },
   mutations: {
-    setCurrentUser(state, val) {
-      state.currentUser = val
+    setCurrentUserId(state, val) {
+      state.currentUserId = val
     },
     setUserProfile(state, val) {
       state.userProfile = val
     },
   },
   actions: {
-    fetchUserProfile({ commit, state }) {
-      fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
-        let user = res.data();
-        user.id = res.id;
-        commit('setUserProfile', user)
-      }).catch(err => {
-        console.log(err)
-      })
+    async login({ commit, dispatch }, user) {
+      const response = await auth.signInWithEmailAndPassword(user.email, user.password)
+      commit('setCurrentUserId', response.user.uid);
+      await dispatch('fetchUserProfile');
     },
-    updateProfile({ state }, data) {
-      let name = data.name
-      let title = data.title
-      let profileImageUrl = data.profileImageUrl
-
-      fb.usersCollection.doc(state.currentUser.uid).update({ name, title, profileImageUrl }).then(() => {
-      }).catch(err => {
-        console.log(err)
-      })
+    async fetchUserProfile({ commit, state }) {
+      const response = await usersCollection.doc(state.currentUserId).get();
+      commit('setUserProfile', { id: response.id, ...response.data() })
     },
+    async signup({ dispatch, commit }, user) {
+      const response = await auth.createUserWithEmailAndPassword(user.email, user.password)
+      commit('setCurrentUserId', response.user.uid);
+      await dispatch('addUserToDb',
+        {
+          uid: response.user.uid,
+          fullname: user.fullname,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          dateOfBirth: user.dateOfBirth,
+          agreedWithTerms: user.agreedWithTerms
+        })
+    },
+    async addUserToDb({ dispatch }, user) {
+      await usersCollection.doc(user.uid).set({
+        uid: user.uid,
+        fullname: user.fullname,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        dateOfBirth: user.dateOfBirth,
+        agreedWithTerms: user.agreedWithTerms
+      })
+      await dispatch('fetchUserProfile');
+    },
+    async logout({ dispatch }) {
+      await auth.signOut();
+      await dispatch('clearData');
+    },
+    clearData({ commit }) {
+      commit('setCurrentUserId', null)
+      commit('setUserProfile', {})
+    }
   }
 };
