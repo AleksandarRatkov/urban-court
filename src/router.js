@@ -21,21 +21,6 @@ const routes =
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
       },
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/landing',
-      name: 'landing',
-      components: { default: Landing, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
-      },
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/login',
@@ -58,7 +43,7 @@ const routes =
       name: 'profile',
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 20 },
         footer: { backgroundColor: 'black' }
       },
       meta: {
@@ -84,7 +69,7 @@ router.beforeEach((to, from, next) => {
   const currentUser = auth.currentUser
 
   if (requiresAuth && !currentUser) {
-    next('/login')
+    next('/')
   } else {
     next()
   }
