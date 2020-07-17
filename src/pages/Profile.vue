@@ -27,11 +27,35 @@
     </div>
     <div class="section">
       <div class="container">
-        <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg"
+        <div class="button-container" @click="modals.classic = true">
+          <a href="#" class="btn btn-primary btn-round btn-lg"
             >Show my QR code</a
           >
         </div>
+        <modal
+          :show.sync="modals.classic"
+          class="modal-primary"
+          :show-close="false"
+          header-classes="justify-content-center"
+          footer-classes="justify-content-center"
+          type="mini"
+        >
+          <div slot="header">
+            <h3>Users QR code</h3>
+          </div>
+          <div>
+            <qrcode-vue
+              :value="userProfile.uid"
+              :size="size"
+              level="H"
+            ></qrcode-vue>
+          </div>
+          <template slot="footer">
+            <n-button type="neutral" link @click.native="modals.classic = false"
+              >Close</n-button
+            >
+          </template>
+        </modal>
         <h3 class="title">About me</h3>
         <h5 class="description">
           An artist of considerable range, Ryan — the name taken by
@@ -44,8 +68,9 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane } from "@/components";
+import { Tabs, TabPane, Modal, Button } from "@/components";
 import { mapState } from "vuex";
+import QrcodeVue from "qrcode.vue";
 
 export default {
   name: "profile",
@@ -53,11 +78,22 @@ export default {
   components: {
     Tabs,
     TabPane,
+    Modal,
+    [Button.name]: Button,
+    QrcodeVue,
   },
   computed: {
     ...mapState({
       userProfile: (state) => state.user.userProfile,
     }),
+  },
+  data() {
+    return {
+      modals: {
+        classic: false,
+      },
+      size: 200,
+    };
   },
 };
 </script>
