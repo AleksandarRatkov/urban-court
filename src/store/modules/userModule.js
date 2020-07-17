@@ -19,15 +19,6 @@ export const userModule = {
     },
   },
   actions: {
-    async login({ commit, dispatch }, user) {
-      const response = await auth.signInWithEmailAndPassword(user.email, user.password)
-      commit('setCurrentUserId', response.user.uid);
-      await dispatch('fetchUserProfile');
-    },
-    async fetchUserProfile({ commit, state }) {
-      const response = await usersCollection.doc(state.currentUserId).get();
-      commit('setUserProfile', { id: response.id, ...response.data() })
-    },
     async signup({ dispatch, commit }, user) {
       const response = await auth.createUserWithEmailAndPassword(user.email, user.password)
       commit('setCurrentUserId', response.user.uid);
@@ -50,6 +41,15 @@ export const userModule = {
         dateOfBirth: user.dateOfBirth,
         agreedWithTerms: user.agreedWithTerms
       })
+      await dispatch('fetchUserProfile');
+    },
+    async fetchUserProfile({ commit, state }) {
+      const response = await usersCollection.doc(state.currentUserId).get();
+      commit('setUserProfile', { id: response.id, ...response.data() })
+    },
+    async login({ commit, dispatch }, user) {
+      const response = await auth.signInWithEmailAndPassword(user.email, user.password)
+      commit('setCurrentUserId', response.user.uid);
       await dispatch('fetchUserProfile');
     },
     async logout({ dispatch }) {
