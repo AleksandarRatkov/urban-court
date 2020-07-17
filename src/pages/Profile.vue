@@ -28,9 +28,7 @@
     <div class="section">
       <div class="container">
         <div class="button-container" @click="modals.classic = true">
-          <a href="#" class="btn btn-primary btn-round btn-lg"
-            >Show my QR code</a
-          >
+          <a class="btn btn-primary btn-round btn-lg qr-btn">Show my QR code</a>
         </div>
         <modal
           :show.sync="modals.classic"
@@ -100,5 +98,8 @@ export default {
 <style lang="scss" scoped>
 .date {
   width: max-content;
+}
+.qr-btn {
+  color: #ffffff;
 }
 </style>
