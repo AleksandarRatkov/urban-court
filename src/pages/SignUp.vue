@@ -7,6 +7,24 @@
 
     <div class="content">
       <div class="container">
+        <modal
+          :show.sync="modals.classic"
+          class="modal-primary"
+          :show-close="false"
+          header-classes="justify-content-center"
+          footer-classes="justify-content-center"
+          type="mini"
+        >
+          <div slot="header">
+            <h3>Oops</h3>
+          </div>
+          <p>{{ errorMsg }}</p>
+          <template slot="footer">
+            <n-button type="neutral" link @click.native="modals.classic = false"
+              >Close</n-button
+            >
+          </template>
+        </modal>
         <ValidationObserver v-slot="{ invalid }">
           <div class="col-md-8 col-12 ml-auto mr-auto">
             <card type="login" plain>
@@ -46,7 +64,19 @@
                 rules="required|numeric|min:8|max:10"
               >
               </fg-input>
-
+              <fg-input
+                class="no-border input-lg picker"
+                name="Date of Birth"
+                rules="required"
+              >
+                <el-date-picker
+                  v-model="signupForm.dateOfBirth"
+                  popper-class="date-picker-primary"
+                  type="date"
+                  placeholder="Select date"
+                >
+                </el-date-picker>
+              </fg-input>
               <fg-input
                 v-model="signupForm.password"
                 class="no-border input-lg"
@@ -71,21 +101,22 @@
               >
               </fg-input>
               <div>
-                <n-checkbox v-model="signupForm.agreeWithTerms">
+                <n-checkbox v-model="signupForm.agreedWithTerms">
                   I agree to the terms and conditions.
                 </n-checkbox>
               </div>
               <template slot="raw-content">
                 <div class="card-footer text-center">
                   <a
-                    href="#pablo"
                     class="btn btn-primary btn-round btn-lg btn-block"
+                    @click="signup"
                     :class="[
                       {
                         disabled:
                           invalid ||
-                          !signupForm.agreeWithTerms ||
-                          matchingPasswords.length > 0,
+                          !signupForm.agreedWithTerms ||
+                          matchingPasswords.length > 0 ||
+                          isFormSubmitted,
                       },
                     ]"
                     >Sign Up</a
@@ -113,20 +144,27 @@
   </div>
 </template>
 <script>
-import { Card, Button, FormGroupInput, Checkbox } from "@/components";
+import { Card, Button, FormGroupInput, Checkbox, Modal } from "@/components";
+import autenticationMixin from "../mixins/authentication";
+import { DatePicker } from "element-ui";
 import MainFooter from "@/layout/MainFooter";
 import { ValidationObserver } from "vee-validate";
+import { mapActions } from "vuex";
+import moment from "moment";
 
 export default {
   name: "signup-page",
   bodyClass: "login-page",
+  mixins: [autenticationMixin],
   components: {
     Card,
     MainFooter,
+    Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
     [Checkbox.name]: Checkbox,
     ValidationObserver,
+    [DatePicker.name]: DatePicker,
   },
   data() {
     return {
@@ -137,9 +175,8 @@ export default {
         dateOfBirth: "",
         password: "",
         repeatPassword: "",
-        agreeWithTerms: false,
+        agreedWithTerms: false,
       },
-      isFormValid: true,
     };
   },
   computed: {
@@ -150,6 +187,34 @@ export default {
           : "Passwords a`re not identical";
       }
     },
+    // isUserOver18() {
+    //   const timeDiff = moment(this.signupForm.dateOfBirth, "DD-MM-YYYY").diff(
+    //     moment()
+    //   );
+    //   console.log(Math.abs(moment.duration(timeDiff).years()) >= 18);
+    //   return moment.duration(timeDiff).years();
+    // },
+  },
+  methods: {
+    ...mapActions({
+      signUpUser: "user/signup",
+    }),
+    async signup() {
+      this.blockForm(true);
+      try {
+        this.formatDateOfBirth();
+        await this.signUpUser(this.signupForm);
+        this.afterSuccessfulAuth();
+      } catch (error) {
+        this.blockForm(false);
+        this.showErrorMessage(error);
+      }
+    },
+    formatDateOfBirth() {
+      this.signupForm.dateOfBirth = moment(this.signupForm.dateOfBirth).format(
+        "DD-MM-YYYY"
+      );
+    },
   },
 };
 </script>
@@ -158,5 +223,8 @@ export default {
   .sign-up {
     margin-top: 3rem !important;
   }
+}
+.picker {
+  margin-bottom: 55px;
 }
 </style>
