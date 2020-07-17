@@ -17,7 +17,7 @@
     <div class="section section-about-us">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 ml-auto mr-auto text-center">
+          <div class="col-md-9 ml-auto mr-auto text-center">
             <h2 class="title">Sta je Urban Court?</h2>
             <h5 class="description">
               Urban Court predstavlja adaptaciju sportskog terena na lokaciji
@@ -31,62 +31,59 @@
         <div class="separator separator-primary"></div>
         <div class="section-story-overview">
           <div class="row">
-            <div class="col-md-6">
+            <div class="row test">
               <div
-                class="image-container image-left"
+                class="col-12 col-xl-6 image-container"
                 style="background-image: url('img1/teren.jpg')"
-              >
-                <!-- First image on the left side -->
-                <p class="blockquote blockquote-primary">
-                  "Over the span of the satellite record, Arctic sea ice has
-                  been declining significantly, while sea ice in the
-                  Antarctichas increased very slightly"
-                  <br />
-                  <br />
-                  <small>-NOAA</small>
-                </p>
+              ></div>
+              <div class="col-xl-1"></div>
+              <div class="col-12 col-xl-5">
+                <h5 class="description">
+                  Cilj čitavog projekta jeste da se na adaptiranom košarkaškom
+                  terenu, kroz različite aktivnosti, promoviše novi olimpijski
+                  sport basket 3×3, urbani sportovi i zdravi stilovi života u
+                  Novom Sadu, što je i jedan od ciljeva OPENS misije. Otvaranje
+                  sportskih terena planirano je za nadolazeći period, gde će
+                  građani Novog Sada imati priliku da se oprobaju u basketu i
+                  urbanim sportovima.
+                </h5>
               </div>
-              <!-- Second image on the left side of the article -->
+            </div>
+            <div class="row test">
+              <div class="col-xl-5 order-2 order-xl-1">
+                <h5 class="description">
+                  Cilj čitavog projekta jeste da se na adaptiranom košarkaškom
+                  terenu, kroz različite aktivnosti, promoviše novi olimpijski
+                  sport basket 3×3, urbani sportovi i zdravi stilovi života u
+                  Novom Sadu, što je i jedan od ciljeva OPENS misije. Otvaranje
+                  sportskih terena planirano je za nadolazeći period, gde će
+                  građani Novog Sada imati priliku da se oprobaju u basketu i
+                  urbanim sportovima.
+                </h5>
+              </div>
+              <div class="col-xl-1 order-xl-2"></div>
               <div
-                class="image-container"
-                style="background-image: url('img1/teren2.jpg')"
+                class=" col-xl-6 order-1 order-xl-3 image-container"
+                style="background-image: url('img1/teren4.jpg')"
               ></div>
             </div>
-            <div class="col-md-6">
-              <!-- First image on the right side, above the article -->
+            <div class="row test">
               <div
-                class="image-container image-right"
-                style="background-image: url('img1/teren4.jpg')"
-              >
-                <!-- <img src="img1/teren.jpg" /> -->
+                class=" col-xl-6 image-container"
+                style="background-image: url('img1/teren2.jpg')"
+              ></div>
+              <div class="col-xl-1"></div>
+              <div class="col-xl-5">
+                <h5 class="description">
+                  Cilj čitavog projekta jeste da se na adaptiranom košarkaškom
+                  terenu, kroz različite aktivnosti, promoviše novi olimpijski
+                  sport basket 3×3, urbani sportovi i zdravi stilovi života u
+                  Novom Sadu, što je i jedan od ciljeva OPENS misije. Otvaranje
+                  sportskih terena planirano je za nadolazeći period, gde će
+                  građani Novog Sada imati priliku da se oprobaju u basketu i
+                  urbanim sportovima.
+                </h5>
               </div>
-              <h3>
-                OPENS URBAN COURT – RUKU POD RUKU SA URBANIM SPORTOVIMA
-              </h3>
-              <p>
-                OPENS u partnerstvu sa Kompanijom NIS, Gradom Novim Sadom i
-                basket ekipom Liman 3×3, kroz program Zajednici Zajedno 2018,
-                realizuje OPENS Urban court, koji donosi Novosađanima prvi
-                moderni i otvoreni teren za basket, na atraktivnoj lokaciji kao
-                što je Liman 4, kod Sunčanog keja, u blizini Youth Creative
-                Polisa – takozvane Kineske četvrti.
-              </p>
-              <p>
-                Tereni će u narednim godinama dobijati nove sportske sadržaje,
-                poput Teqball-a i streetwork out teretane. OPENS Urban court
-                predstavljaće novo i bezbedno mesto za okupljanje svih onih koji
-                žele svoje slobodno vreme da provedu kroz sportske, rekreativne
-                i edukativne aktivnosti, i to potpuno besplatno.
-              </p>
-              <p>
-                Cilj čitavog projekta jeste da se na adaptiranom košarkaškom
-                terenu, kroz različite aktivnosti, promoviše novi olimpijski
-                sport basket 3×3, urbani sportovi i zdravi stilovi života u
-                Novom Sadu, što je i jedan od ciljeva OPENS misije. Otvaranje
-                sportskih terena planirano je za nadolazeći period, gde će
-                građani Novog Sada imati priliku da se oprobaju u basketu i
-                urbanim sportovima.
-              </p>
             </div>
           </div>
         </div>
@@ -108,4 +105,20 @@ export default {
   },
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.images {
+  border-radius: 0.25rem;
+}
+.test {
+  margin: 15px;
+}
+.description {
+  margin-top: 50px;
+}
+
+@media screen and (min-width: 1200px) {
+  .test {
+    height: 450px;
+  }
+}
+</style>
