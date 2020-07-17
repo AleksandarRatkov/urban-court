@@ -8,21 +8,24 @@
   >
     <template slot-scope="{ toggle, isToggled }">
       <img class="navbar-img" src="img1/logo-header.png" alt="" />
-      <!-- <router-link v-popover:popover1 class="navbar-brand brand-name" to="/">
-        Urban Court
-      </router-link> -->
     </template>
     <template slot="navbar-menu">
-      <li class="nav-item">
+      <li class="nav-item" v-if="currentRoute !== 'profile'">
         <router-link
           class="nav-link"
-          :to="currentRoute === 'signup' ? '/login' : '/signup'"
+          :to="currentRoute === 'login' ? '/signup' : '/login'"
         >
           <i class="now-ui-icons users_circle-08"></i>
-          <p>{{ currentRoute == "signup" ? "Login" : "Sign Up" }}</p>
+          <p>{{ currentRoute == "login" ? "Sign Up" : "Login" }}</p>
         </router-link>
       </li>
 
+      <li class="nav-item" v-if="currentRoute === 'profile'">
+        <span class="nav-link" @click="logout">
+          <i class="now-ui-icons media-1_button-power"></i>
+          <p>Logout</p>
+        </span>
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"
@@ -56,6 +59,7 @@
 <script>
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
 import { Popover } from "element-ui";
+import { mapActions } from "vuex";
 export default {
   name: "main-navbar",
   props: {
@@ -72,6 +76,17 @@ export default {
   computed: {
     currentRoute() {
       return this.$route.name;
+    },
+  },
+  methods: {
+    ...mapActions({
+      logoutUser: "user/logout",
+    }),
+    async logout() {
+      await this.logoutUser();
+      this.$router.push({
+        path: "/",
+      });
     },
   },
 };
