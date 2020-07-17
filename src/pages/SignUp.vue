@@ -119,7 +119,11 @@
                           isFormSubmitted,
                       },
                     ]"
-                    >Sign Up</a
+                    ><i
+                      v-if="isFormSubmitted"
+                      class="now-ui-icons loader_refresh spin"
+                    ></i
+                    >{{ isFormSubmitted ? "" : "Sign Up" }}</a
                   >
                 </div>
 

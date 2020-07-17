@@ -64,7 +64,11 @@
                         disabled: invalid || isFormSubmitted,
                       },
                     ]"
-                    >Login</a
+                    ><i
+                      v-if="isFormSubmitted"
+                      class="now-ui-icons loader_refresh spin"
+                    ></i
+                    >{{ isFormSubmitted ? "" : "Login" }}</a
                   >
                 </div>
 
