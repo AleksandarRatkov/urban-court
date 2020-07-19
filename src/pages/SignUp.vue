@@ -109,7 +109,7 @@
                 <div class="card-footer text-center">
                   <a
                     class="btn btn-primary btn-round btn-lg btn-block"
-                    @click="signup"
+                    @click="signup(signupForm)"
                     :class="[
                       {
                         disabled:
@@ -141,6 +141,27 @@
               </template>
             </card>
           </div>
+          <modal
+            :show.sync="modals.verify"
+            class="modal-primary"
+            :show-close="false"
+            header-classes="justify-content-center"
+            footer-classes="justify-content-center"
+            type="mini"
+          >
+            <div slot="header">
+              <h3>Verify your Email</h3>
+            </div>
+            <p>Please check your email address and verify it.</p>
+            <template slot="footer">
+              <n-button
+                type="neutral"
+                link
+                @click.native="modals.verify = false"
+                >Close</n-button
+              >
+            </template>
+          </modal>
         </ValidationObserver>
       </div>
     </div>
@@ -153,8 +174,9 @@ import autenticationMixin from "../mixins/authentication";
 import { DatePicker } from "element-ui";
 import MainFooter from "@/layout/MainFooter";
 import { ValidationObserver } from "vee-validate";
-import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
 import moment from "moment";
+import { auth, usersCollection } from "../firebaseConfig";
 
 export default {
   name: "signup-page",
@@ -173,7 +195,7 @@ export default {
   data() {
     return {
       signupForm: {
-        fullName: "",
+        fullname: "",
         email: "",
         phoneNumber: "",
         dateOfBirth: "",
@@ -200,24 +222,62 @@ export default {
     // },
   },
   methods: {
-    ...mapActions({
-      signUpUser: "user/signup",
+    ...mapMutations({
+      setCurrentId: "user/setCurrentUserId",
     }),
-    async signup() {
+    signup(user) {
       this.blockForm(true);
-      try {
-        this.formatDateOfBirth();
-        await this.signUpUser(this.signupForm);
-        this.afterSuccessfulAuth();
-      } catch (error) {
-        this.blockForm(false);
-        this.showErrorMessage(error);
-      }
+      auth
+        .createUserWithEmailAndPassword(user.email, user.password)
+        .then((response) => {
+          this.formatDateOfBirth();
+          usersCollection.doc(response.user.uid).set({
+            uid: response.user.uid,
+            fullname: user.fullname,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            dateOfBirth: user.dateOfBirth,
+            agreedWithTerms: user.agreedWithTerms,
+          });
+          this.setCurrentUserId(response.user.uid);
+          this.afterSuccessfulAuth();
+        })
+        .catch((error) => {
+          this.showErrorMessage(error);
+        });
     },
     formatDateOfBirth() {
       this.signupForm.dateOfBirth = moment(this.signupForm.dateOfBirth).format(
         "DD-MM-YYYY"
       );
+    },
+    addUserToDb(user) {
+      usersCollection
+        .doc(user.uid)
+        .set({
+          uid: user.uid,
+          fullname: user.fullname,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          dateOfBirth: user.dateOfBirth,
+          agreedWithTerms: user.agreedWithTerms,
+        })
+        .then(() => {
+          this.afterSuccessfulAuth();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    sendVerificationMail({}) {
+      auth.currentUser
+        .sendEmailVerification()
+        .then(() => {
+          console.log("email sent");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

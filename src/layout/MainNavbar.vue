@@ -59,7 +59,9 @@
 <script>
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
 import { Popover } from "element-ui";
-import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
+import { auth } from "../firebaseConfig";
+
 export default {
   name: "main-navbar",
   props: {
@@ -79,14 +81,23 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      logoutUser: "user/logout",
+    ...mapMutations({
+      setCurrentId: "user/setCurrentUserId",
+      setUserProfile: "user/setUserProfile",
     }),
-    async logout() {
-      await this.logoutUser();
-      this.$router.push({
-        path: "/",
-      });
+    logout() {
+      auth
+        .signOut()
+        .then(() => {
+          this.setCurrentId(null);
+          this.setUserProfile({});
+          this.$router.push({
+            path: "/",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

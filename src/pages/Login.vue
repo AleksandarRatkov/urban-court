@@ -97,7 +97,8 @@ import { Card, Button, FormGroupInput, Modal } from "@/components";
 import { ValidationObserver } from "vee-validate";
 import MainFooter from "@/layout/MainFooter";
 import autenticationMixin from "../mixins/authentication";
-import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
+import { auth } from "../firebaseConfig";
 export default {
   name: "login-page",
   bodyClass: "login-page",
@@ -121,18 +122,21 @@ export default {
     };
   },
   methods: {
-    ...mapActions({
-      loginUser: "user/login",
-    }),
-    async login() {
+    login() {
       this.blockForm(true);
-      try {
-        await this.loginUser(this.signupForm);
-        this.afterSuccessfulAuth();
-      } catch (error) {
-        this.blockForm(false);
-        this.showErrorMessage(error);
-      }
+      auth
+        .signInWithEmailAndPassword(
+          this.signupForm.email,
+          this.signupForm.password
+        )
+        .then((response) => {
+          this.setCurrentId(response.user.uid);
+          this.afterSuccessfulAuth();
+          // dispatch("fetchUserProfile");
+        })
+        .catch((error) => {
+          this.showErrorMessage(error);
+        });
     },
   },
 };

@@ -7,8 +7,8 @@ Vue.use(Vuex)
 
 fb.auth.onAuthStateChanged(user => {
   if (user) {
-    store.commit('user/setCurrentUserId', user.uid)
-    store.dispatch('user/fetchUserProfile')
+    store.commit('user/setCurrentUserId', user.uid);
+    store.dispatch('user/fetchUserProfile');
   }
 })
 

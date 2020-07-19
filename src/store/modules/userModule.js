@@ -2,7 +2,6 @@ import {
   auth,
   usersCollection,
 } from '../../firebaseConfig'
-const fb = require('../../firebaseConfig')
 
 export const userModule = {
   namespaced: true,
@@ -19,46 +18,64 @@ export const userModule = {
     },
   },
   actions: {
-    async signup({ dispatch, commit }, user) {
-      const response = await auth.createUserWithEmailAndPassword(user.email, user.password)
-      commit('setCurrentUserId', response.user.uid);
-      await dispatch('addUserToDb',
-        {
-          uid: response.user.uid,
-          fullname: user.fullname,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          dateOfBirth: user.dateOfBirth,
-          agreedWithTerms: user.agreedWithTerms
-        })
+    // sendVerificationMail({ }) {
+    //   auth.currentUser.sendEmailVerification()
+    //     .then(() => {
+    //       console.log("email sent");
+    //     }).catch(error => {
+    //       console.log(error);
+    //     })
+
+    // },
+    // signup({ dispatch, commit }, user) {
+    //   auth.createUserWithEmailAndPassword(user.email, user.password).then(response => {
+    //     commit('setCurrentUserId', response.user.uid);
+    //     dispatch('addUserToDb',
+    //       {
+    //         uid: response.user.uid,
+    //         fullname: user.fullname,
+    //         email: user.email,
+    //         phoneNumber: user.phoneNumber,
+    //         dateOfBirth: user.dateOfBirth,
+    //         agreedWithTerms: user.agreedWithTerms
+    //       })
+    //   })
+    // },
+    // addUserToDb({ }, user) {
+    //   usersCollection.doc(user.uid).set({
+    //     uid: user.uid,
+    //     fullname: user.fullname,
+    //     email: user.email,
+    //     phoneNumber: user.phoneNumber,
+    //     dateOfBirth: user.dateOfBirth,
+    //     agreedWithTerms: user.agreedWithTerms
+    //   })
+    // },
+    fetchUserProfile({ commit, state }) {
+      usersCollection.doc(state.currentUserId).get().then(user => {
+        commit('setUserProfile', { id: user.id, ...user.data() })
+      }).catch(error => {
+        console.log(error);
+      });
     },
-    async addUserToDb({ dispatch }, user) {
-      await usersCollection.doc(user.uid).set({
-        uid: user.uid,
-        fullname: user.fullname,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        dateOfBirth: user.dateOfBirth,
-        agreedWithTerms: user.agreedWithTerms
-      })
-      await dispatch('fetchUserProfile');
-    },
-    async fetchUserProfile({ commit, state }) {
-      const response = await usersCollection.doc(state.currentUserId).get();
-      commit('setUserProfile', { id: response.id, ...response.data() })
-    },
-    async login({ commit, dispatch }, user) {
-      const response = await auth.signInWithEmailAndPassword(user.email, user.password)
-      commit('setCurrentUserId', response.user.uid);
-      await dispatch('fetchUserProfile');
-    },
-    async logout({ dispatch }) {
-      await auth.signOut();
-      await dispatch('clearData');
-    },
-    clearData({ commit }) {
-      commit('setCurrentUserId', null)
-      commit('setUserProfile', {})
-    }
+    // login({ commit, dispatch }, user) {
+    //   auth.signInWithEmailAndPassword(user.email, user.password).then(response => {
+    //     commit('setCurrentUserId', response.user.uid);
+    //     dispatch('fetchUserProfile');
+    //   }).catch(error => {
+    //     console.log(error);
+    //   });
+    // },
+    // logout({ dispatch }) {
+    //   auth.signOut().then(() => {
+    //     dispatch('clearData');
+    //   }).catch(error => {
+    //     console.log(error);
+    //   });
+    // },
+    // clearData({ commit }) {
+    //   commit('setCurrentUserId', null)
+    //   commit('setUserProfile', {})
+    // }
   }
 };
