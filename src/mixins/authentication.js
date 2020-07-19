@@ -4,7 +4,8 @@ export default {
             errorMsg: "",
             isFormSubmitted: false,
             modals: {
-                classic: false
+                classic: false,
+                verify: false
             }
         }
     },
