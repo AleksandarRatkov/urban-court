@@ -31,7 +31,6 @@
               <div slot="header" class="sign-up">
                 <h1>Sign Up</h1>
               </div>
-
               <fg-input
                 v-model="signupForm.fullname"
                 class="no-border input-lg"
@@ -70,7 +69,7 @@
                 rules="required"
               >
                 <el-date-picker
-                  v-model="signupForm.dateOfBirth"
+                  v-model="signupForm.date"
                   popper-class="date-picker-primary"
                   type="date"
                   placeholder="Select date"
@@ -176,6 +175,7 @@ export default {
         fullName: "",
         email: "",
         phoneNumber: "",
+        date: "",
         dateOfBirth: "",
         password: "",
         repeatPassword: "",
@@ -203,19 +203,19 @@ export default {
     ...mapActions({
       signUpUser: "user/signup",
     }),
-    async signup() {
+    signup() {
       this.blockForm(true);
-      try {
-        this.formatDateOfBirth();
-        await this.signUpUser(this.signupForm);
-        this.afterSuccessfulAuth();
-      } catch (error) {
-        this.blockForm(false);
-        this.showErrorMessage(error);
-      }
+      this.formatDateOfBirth();
+      this.signUpUser(this.signupForm)
+        .then(() => {
+          this.afterSuccessfulAuth();
+        })
+        .catch((err) => {
+          this.showErrorMessage(err);
+        });
     },
     formatDateOfBirth() {
-      this.signupForm.dateOfBirth = moment(this.signupForm.dateOfBirth).format(
+      this.signupForm.dateOfBirth = moment(this.signupForm.date).format(
         "DD-MM-YYYY"
       );
     },

@@ -1,63 +1,45 @@
-import {
-  auth,
-  usersCollection,
-} from '../../firebaseConfig'
-const fb = require('../../firebaseConfig')
+import * as fb from '../../firebaseConfig'
+import router from '../../router'
 
 export const userModule = {
   namespaced: true,
   state: {
-    currentUserId: null,
     userProfile: {},
   },
   mutations: {
-    setCurrentUserId(state, val) {
-      state.currentUserId = val
-    },
     setUserProfile(state, val) {
       state.userProfile = val
     },
   },
   actions: {
-    async signup({ dispatch, commit }, user) {
-      const response = await auth.createUserWithEmailAndPassword(user.email, user.password)
-      commit('setCurrentUserId', response.user.uid);
-      await dispatch('addUserToDb',
-        {
-          uid: response.user.uid,
-          fullname: user.fullname,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          dateOfBirth: user.dateOfBirth,
-          agreedWithTerms: user.agreedWithTerms
-        })
-    },
-    async addUserToDb({ dispatch }, user) {
-      await usersCollection.doc(user.uid).set({
+    async signup({ dispatch }, form) {
+      const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password);
+
+      await dispatch('addUserToDb', {
         uid: user.uid,
-        fullname: user.fullname,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        dateOfBirth: user.dateOfBirth,
-        agreedWithTerms: user.agreedWithTerms
-      })
-      await dispatch('fetchUserProfile');
+        fullname: form.fullname,
+        email: form.email,
+        phoneNumber: form.phoneNumber,
+        dateOfBirth: form.dateOfBirth,
+        agreedWithTerms: form.agreedWithTerms
+      });
     },
-    async fetchUserProfile({ commit, state }) {
-      const response = await usersCollection.doc(state.currentUserId).get();
-      commit('setUserProfile', { id: response.id, ...response.data() })
+    async addUserToDb({ }, user) {
+      await fb.usersCollection.doc(user.uid).set(user)
     },
-    async login({ commit, dispatch }, user) {
-      const response = await auth.signInWithEmailAndPassword(user.email, user.password)
-      commit('setCurrentUserId', response.user.uid);
-      await dispatch('fetchUserProfile');
+    fetchUserProfile({ commit }, user) {
+      fb.usersCollection.doc(user.uid).get().then(response => {
+        commit('setUserProfile', { id: response.id, ...response.data() })
+      });
+    },
+    async login({ }, form) {
+      await fb.auth.signInWithEmailAndPassword(form.email, form.password)
     },
     async logout({ dispatch }) {
-      await auth.signOut();
-      await dispatch('clearData');
+      await fb.auth.signOut()
+      dispatch('clearData');
     },
     clearData({ commit }) {
-      commit('setCurrentUserId', null)
       commit('setUserProfile', {})
     }
   }

@@ -16,6 +16,7 @@ export default {
         showErrorMessage(message) {
             this.errorMsg = message;
             this.modals.classic = true;
+            this.blockForm(false);
         },
         blockForm(value) {
             this.isFormSubmitted = value;
