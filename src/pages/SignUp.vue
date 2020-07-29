@@ -203,16 +203,15 @@ export default {
     ...mapActions({
       signUpUser: "user/signup",
     }),
-    signup() {
-      this.blockForm(true);
-      this.formatDateOfBirth();
-      this.signUpUser(this.signupForm)
-        .then(() => {
-          this.afterSuccessfulAuth();
-        })
-        .catch((err) => {
-          this.showErrorMessage(err);
-        });
+    async signup() {
+      try {
+        this.blockForm(true);
+        this.formatDateOfBirth();
+        await this.signUpUser(this.signupForm);
+        this.afterSuccessfulAuth();
+      } catch (error) {
+        this.showErrorMessage(error);
+      }
     },
     formatDateOfBirth() {
       this.signupForm.dateOfBirth = moment(this.signupForm.date).format(

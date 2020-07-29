@@ -8,7 +8,7 @@ export const userModule = {
   },
   mutations: {
     setUserProfile(state, val) {
-      state.userProfile = val
+      state.userProfile = val;
     },
   },
   actions: {
@@ -25,22 +25,21 @@ export const userModule = {
       });
     },
     async addUserToDb({ }, user) {
-      await fb.usersCollection.doc(user.uid).set(user)
+      await fb.usersCollection.doc(user.uid).set(user);
     },
-    fetchUserProfile({ commit }, user) {
-      fb.usersCollection.doc(user.uid).get().then(response => {
-        commit('setUserProfile', { id: response.id, ...response.data() })
-      });
+    async fetchUserProfile({ commit }, user) {
+      const response = await fb.usersCollection.doc(user.uid).get();
+      commit('setUserProfile', { id: response.id, ...response.data() });
     },
     async login({ }, form) {
       await fb.auth.signInWithEmailAndPassword(form.email, form.password)
     },
     async logout({ dispatch }) {
-      await fb.auth.signOut()
+      await fb.auth.signOut();
       dispatch('clearData');
     },
     clearData({ commit }) {
-      commit('setUserProfile', {})
+      commit('setUserProfile', {});
     }
   }
 };

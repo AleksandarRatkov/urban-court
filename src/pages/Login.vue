@@ -124,15 +124,14 @@ export default {
     ...mapActions({
       loginUser: "user/login",
     }),
-    login() {
-      this.blockForm(true);
-      this.loginUser(this.signupForm)
-        .then(() => {
-          this.afterSuccessfulAuth();
-        })
-        .catch((error) => {
-          this.showErrorMessage(error);
-        });
+    async login() {
+      try {
+        this.blockForm(true);
+        await this.loginUser(this.signupForm);
+        this.afterSuccessfulAuth();
+      } catch (error) {
+        this.showErrorMessage(error);
+      }
     },
   },
 };
