@@ -4,7 +4,8 @@ export default {
             errorMsg: "",
             isFormSubmitted: false,
             modals: {
-                classic: false
+                classic: false,
+                verify: false
             }
         }
     },
@@ -15,6 +16,7 @@ export default {
         showErrorMessage(message) {
             this.errorMsg = message;
             this.modals.classic = true;
+            this.blockForm(false);
         },
         blockForm(value) {
             this.isFormSubmitted = value;

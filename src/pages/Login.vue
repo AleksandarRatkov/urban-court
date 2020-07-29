@@ -125,12 +125,11 @@ export default {
       loginUser: "user/login",
     }),
     async login() {
-      this.blockForm(true);
       try {
+        this.blockForm(true);
         await this.loginUser(this.signupForm);
         this.afterSuccessfulAuth();
       } catch (error) {
-        this.blockForm(false);
         this.showErrorMessage(error);
       }
     },

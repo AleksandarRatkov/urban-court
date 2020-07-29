@@ -7,7 +7,9 @@
     menu-classes="ml-auto"
   >
     <template slot-scope="{ toggle, isToggled }">
-      <img class="navbar-img" src="img1/logo-header.png" alt="" />
+      <router-link to="/">
+        <img class="navbar-img" src="img1/logo-header.png" alt="" />
+      </router-link>
     </template>
     <template slot="navbar-menu">
       <li class="nav-item" v-if="currentRoute !== 'profile'">
